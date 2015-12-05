@@ -159,6 +159,7 @@ extension SWTSocketConnection{
             throw SWTSocketCreateError.SocketSettingError
         }
         return s
+        NSRunLoop.mainRunLoop().run()
     }
 }
 
