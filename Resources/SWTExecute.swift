@@ -22,7 +22,6 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 
 #if os(iOS) || os(OSX)
     typealias SWTExecuteQueue = dispatch_queue_t
@@ -40,7 +39,7 @@ func SWTExecuteAsyn(closure:()->()){
         dispatch_async(dispatch_queue_create("SWTGeneralAsyncQueue", DISPATCH_QUEUE_CONCURRENT), closure)
     #endif
 }
-
+#if os(iOS) || os(OSX)
 func SWTIOExecute(data:[UInt8],closure:(Bool,dispatch_data_t!,Int32)->()){
         let ioqueue = dispatch_queue_create("SWTIOQueue", DISPATCH_QUEUE_CONCURRENT)
         let channel = dispatch_io_create(DISPATCH_IO_RANDOM, STDOUT_FILENO, ioqueue, { (i) -> Void in
@@ -97,4 +96,4 @@ func writeAysnc<R:SWTRouting>(connection:(R,R.ClientID),str:String,completion:Su
         }
     }
 }
-
+#endif
