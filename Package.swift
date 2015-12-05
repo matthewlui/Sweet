@@ -1,5 +1,6 @@
 import PackageDescription
 
 let package = Package(
-name: "Sweet"
+name: "Sweet",
+    version:1
 )
