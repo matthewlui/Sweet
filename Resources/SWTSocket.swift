@@ -22,6 +22,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
 
 //MARK: Errors' declaration
 enum SWTSocketCreateError:ErrorType{
@@ -129,7 +134,7 @@ extension SWTSocketConnection{
         if s < 0{
             throw SWTSocketCreateError.PortError
         }
-        
+
         //TODO: fcntl(sockfd,F_SETFL,O_NONBLOCK) find instead in OSX
         var flag:Int32 = 1
         if setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &flag, socklen_t(sizeof(Int32))) == -1 {
@@ -137,7 +142,7 @@ extension SWTSocketConnection{
             close(s)
             throw SWTSocketCreateError.SocketSettingError
         }
-        
+
         var addr = sockaddr_in()
         addr.sin_len = __uint8_t(sizeof(sockaddr_in))
         addr.sin_family = sa_family_t(AF_INET)
@@ -178,8 +183,3 @@ extension SWTSocketReleasing{
 /// Use to define Swift tailor HTTP service protocol.
 /// Default extension are all writen by supporting of POSIX
 public typealias SWTSocketService = protocol<SWTSocketConnection,SWTSocketListening,SWTSocketRequestHeaderRecieving,SWTSocketWriting,SWTSocketReleasing>
-
-
-
-
-
